@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Blog - My Portfolio{% endblock %}
+
+{% block content %}
+    <h1>Detail²</h1>
+        {% for article in article %}
+
+                <div class="card">
+                    <h3>{{ article.name }}</h3>
+                    <p>{{ article.description }}</p>
+                </div>
+            {% endif %}
+        {% endfor %}
+{% endblock %}

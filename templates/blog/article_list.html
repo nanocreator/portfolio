@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Blog - My Portfolio{% endblock %}
+
+{% block content %}
+<div class="project-list">
+    <div class="project">
+        <h1>Blog</h1>
+        <p>Restez informé, des connexions </p>
+        <div class="project-click">Tech - Design - Code</div>
+    </div>
+
+
+{% for category in categories %}
+    <h2 class="categorie_project">{{ category.title }}</h2>
+    <div class="card-grid">
+        {% for article in articles %}
+            {% if article.category == category %}
+                <div class="card">
+                    <h3><a href="{% url 'blog:article_detail' article.pk %}">{{ article.name }}</a></h3>
+                    <p>{{ article.description }}</p>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endfor %}
+
+</div>
+
+{% endblock %}

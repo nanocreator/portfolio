@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} NANO CREATOR {% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/core/core.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/about/about.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/blog/blog_list.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/project/project_list.css' %}"/>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=New+Amsterdam&display=swap" rel="stylesheet">
+
+    <script src="{% static 'htmx.min.js' %}" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollToPlugin.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+            integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+</head>
+<body>
+<nav class="navbar">
+    <div class="logos">
+        <a href="{% url 'core:home' %}" class="logo">
+            <img src="{% static 'img/logo.png' %]"  alt="logo">
+            <h1>Nano</h1>
+        </a>
+    </div>
+    <div class="menu">
+
+        <div class="hamburger-menu">
+            <button class="hamburger-button">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="34"
+                     height="18"
+                     viewBox="0 0 34 18" fill="none">
+                    <rect width="34" height="18" transform="matrix(1 0 0 -1 0 18)" fill="url(#pattern0_254_2)"/>
+                    <defs>
+                        <pattern id="pattern0_254_2" patternContentUnits="objectBoundingBox" width="1" height="1">
+                            <use xlink:href="#image0_254_2" transform="matrix(0.00195312 0 0 0.00368924 0 -0.0238715)"/>
+                        </pattern>
+                        <image id="image0_254_2" width="512" height="284"
+                               xlink:href="data:image/png;base64,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"/>
+                    </defs>
+                </svg>
+            </button>
+            <div class="sidebar">
+                <ul>
+                    <li><a href="{% url 'core:home' %}">Acceuil</a></li>
+                    <li><a href="{% url 'core:contact' %}">Contact</a></li>
+                    <li><a href="{% url 'project:projects' %}">Projets</a></li>
+                    <li><a href="{% url 'blog:article_list' %}">Blog</a></li>
+                    <li><a href="{% url 'about:about' %}">A propos</a></li>
+                </ul>
+            </div>
+            <nav class="sidebar">
+                <button class="close-button">Close</button>
+                <ul>
+                    <li><a href="{% url 'core:home' %}">Acceuil</a></li>
+                    <li><a href="{% url 'project:projects' %}">Projets</a></li>
+                    <li><a href="{% url 'blog:article_list' %}">Blog</a></li>
+                    <li><a href="{% url 'about:about' %}">A propos</a></li>
+                </ul>
+            </nav>
+
+        </div>
+    </div>
+</nav>
+
+
+<div id="overview">
+    {% block content %}{% endblock %}
+</div>
+
+
+<footer>
+    <div class="foot">
+        <nav class="foot-nav">
+            <div class="newsletters">
+                <form action="{% url 'core:newsletter_signup' %}" method="post">
+                    {% csrf_token %}
+                    <div class="newsletter">
+                        <h2 class="newsletter_label">Newletters
+                        </h2>
+                        <div>
+
+                            <input type="email" class="email-letter" id="email" name="email"
+                                   placeholder="Email Address" required="">
+                            <button type="submit" aria-label="Souscrire" class="email_submit">
+                                <svg width="41" height="22" viewBox="0 0 41 22" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M40.002 11.001H0.501953M40.002 11.001L30.002 1.00098M40.002 11.001L30.002 21.001"
+                                          stroke="#0E100F"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <br>
+                </form>
+            </div>
+            <div>
+                <div class="foot-nav-menu">
+                    <div>
+                        <h2 class="footer__label">
+                            Navigation</h2>
+                        <div class="footer__nav">
+                            <ul class="footer__menu">
+                                <li class="footer__menu-item"><a href="{% url 'project:projects' %}"
+                                                                 class="footer__menu-link">Projets</a>
+                                </li>
+                                <li class="footer__menu-item"><a href="{% url 'blog:article_list' %}"
+                                                                 class="footer__menu-link">Blog</a></li>
+                                <li class="footer__menu-item"><a href="{% url 'core:contact' %}" class="footer__menu-link">Contact</a></li>
+                                <li class="footer__menu-item"><a href="{% url 'about:about' %}" class="footer__menu-link">About</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div>
+                        <h2 class="footer__label">Connect</h2>
+                        <div class="footer__nav">
+                            <ul class="footer__menu">
+                                <li class="footer__menu-item"><a href="https://www.codepen.io/GreenSock"
+                                                                 class="footer__menu-link" target="_blank"
+                                                                 rel="noopener">Youtube</a></li>
+                                <li class="footer__menu-item"><a href="https://github.com/nanocreator/"
+                                                                 class="footer__menu-link" target="_blank"
+                                                                 rel="noopener">GitHub</a></li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="copyright">© 2024 Tout droits Réservés</div>
+</footer>
+<script>
+    /*
+      // Select the elements
+      const hamburgerButton = document.querySelector('.hamburger-button');
+      const hamburgerIcon = document.querySelector('.hamburger-icon');
+      const sidebar = document.querySelector('.sidebar');
+      const closeButton = document.querySelector('.close-button');
+      const menuItems = document.querySelectorAll('.sidebar li');
+
+      // Add event listeners
+      hamburgerButton.addEventListener('click', () => {
+          // Animate the sidebar and hamburger icon
+          gsap.to(sidebar, { x: 0, duration: 0.3 });
+          gsap.to(hamburgerIcon, { rotation: 45, y: 6, duration: 0.3 });
+
+          // Animate the menu items
+          gsap.staggerFromTo(menuItems, 0.3, { opacity: 0, y: 20 }, { opacity: 1, y: 0 }, 0.1);
+      });
+
+      closeButton.addEventListener('click', () => {
+          // Animate the sidebar and hamburger icon
+          gsap.to(sidebar, { x: '-100%', duration: 0.3 });
+          gsap.to(hamburgerIcon, { rotation: 0, y: 0, duration: 0.3 });
+
+          // Animate the menu items
+          gsap.staggerTo(menuItems, 0.3, { opacity: 0, y: 20 }, 0.1);
+      });
+
+      */
+
+
+    const hamburgerButton = document.querySelector('.hamburger-button');
+    const sidebar = document.querySelector('.sidebar');
+
+    hamburgerButton.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+    });
+
+
+</script>
+</body>
+</html>
